@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        is-multidex="true"
+        jar="/home/philipp/Documents/OxfordBusSchedule/app/build/intermediates/incremental-classes/debug/instant-run-bootstrap.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="26.0.1"
+        sha1="1fd22a586adb2c7cfea02533ad2d57556322646a">
+        <dex dex="/home/philipp/Documents/OxfordBusSchedule/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run-bootstrap_bf14bad4c0127d34f2e65077e1b60bdf1969185d/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/home/philipp/.android/build-cache/d316ff6ad9ede75362ae084f7835ed599e49a304/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="26.0.1"
+        sha1="c4f45092eee6cdf1a5dbd597b2b6819be652ce2e">
+        <dex dex="/home/philipp/Documents/OxfordBusSchedule/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_a73a5ac05783f3c5fd0616eab80c27f5223499b3/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/home/philipp/.android/build-cache/05436f4483b57022f584d13f136cc626a023a36c/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="26.0.1"
+        sha1="cddcd0fb93bc70e27325f2f715b2710332004ebb">
+        <dex dex="/home/philipp/Documents/OxfordBusSchedule/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_43b678a334dd0833466e433296ec7611c03b59bc/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/home/philipp/Documents/OxfordBusSchedule/app/build/intermediates/incremental-runtime-classes/debug/instant-run.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="26.0.1"
+        sha1="3be78ebc2706b2e1fe2f12d5726887a92d6c183b">
+        <dex dex="/home/philipp/Documents/OxfordBusSchedule/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run_287487d5d2703c0eb4e6187ce201b688262a007f/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/home/philipp/.android/build-cache/8c28efeec208150d32b6d9fb0a198e16567ae2d4/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="26.0.1"
+        sha1="44ee06abb66da30f5855e6bf54574e64cdcd982a">
+        <dex dex="/home/philipp/Documents/OxfordBusSchedule/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_bcb173a97fc1bfd96ff88ebdb64e6e709073a116/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/home/philipp/.android/build-cache/42c03b042c3a78e20a9c2c702181e42f8686c1a1/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="26.0.1"
+        sha1="6a022bf00ccd0948a8180c505e8e458bbddd43a6">
+        <dex dex="/home/philipp/Documents/OxfordBusSchedule/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_94528cf3fdec33f43318bdf120ff240242e65ea0/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/home/philipp/Android/Sdk/extras/m2repository/com/android/support/constraint/constraint-layout-solver/1.0.2/constraint-layout-solver-1.0.2.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="26.0.1"
+        sha1="b9cd8fc6bd15cb915735d34535db30ece0c44603">
+        <dex dex="/home/philipp/Documents/OxfordBusSchedule/app/build/intermediates/transforms/dex/debug/folders/1000/10/constraint-layout-solver-1.0.2_551ceffe8060d4accac3699e5163af2ac43d93cf/classes.dex" />
+    </item>
+
+</items>
