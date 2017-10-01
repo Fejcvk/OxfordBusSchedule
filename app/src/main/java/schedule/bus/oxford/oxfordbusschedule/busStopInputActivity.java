@@ -19,7 +19,6 @@ public class busStopInputActivity extends AppCompatActivity {
     BusstopManager busstopmanager;
     AutoCompleteTextView autoCompleteTextView;
     ArrayList<String> autocomplete;
-    MultiAutoCompleteTextView multiAutoCompleteTextView;
     CheckBox checkU1;
     CheckBox checkU5;
     CheckBox check8;
@@ -31,11 +30,11 @@ public class busStopInputActivity extends AppCompatActivity {
         busstopmanager = new BusstopManager(this.getBaseContext());
         autocomplete = busstopmanager.getBusStopNames();
         setContentView(R.layout.input_stop_activity);
-        multiAutoCompleteTextView = (MultiAutoCompleteTextView)findViewById(R.id.multiAutoCompleteTextView);
+        autoCompleteTextView = (AutoCompleteTextView)findViewById(R.id.autoCompleteTextView);
         adapter = new
                 ArrayAdapter<>(this,android.R.layout.simple_list_item_1,autocomplete);
-        multiAutoCompleteTextView.setAdapter(adapter);
-        multiAutoCompleteTextView.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
+        autoCompleteTextView.setAdapter(adapter);
+        autoCompleteTextView.setThreshold(1);
         checkU1 = (CheckBox)findViewById(R.id.checkboxU1);
         checkU5 = (CheckBox)findViewById(R.id.checkboxU5);
         check8 = (CheckBox)findViewById(R.id.checkbox8);
@@ -89,9 +88,9 @@ public class busStopInputActivity extends AppCompatActivity {
         adapter.clear();
         adapter.addAll(autocomplete);
         adapter.notifyDataSetChanged();
-        multiAutoCompleteTextView.setText(multiAutoCompleteTextView.getText()+"");
-        multiAutoCompleteTextView.setSelection(multiAutoCompleteTextView.length());
-        multiAutoCompleteTextView.showDropDown();
+        autoCompleteTextView.setText(autoCompleteTextView.getText()+"");
+        autoCompleteTextView.setSelection(autoCompleteTextView.length());
+        autoCompleteTextView.showDropDown();
 
     }
 }
