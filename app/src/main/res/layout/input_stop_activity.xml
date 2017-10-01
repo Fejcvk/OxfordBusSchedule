@@ -44,28 +44,10 @@
         android:layout_height="match_parent"
         android:id="@+id/scrollViewLayout"
         android:layout_marginTop="25dp">
-            <ScrollView
-                android:layout_width="match_parent"
-                android:layout_height="344dp">
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/tableLinearLayout">
-                    <TableLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-                            <TableRow
-                                android:id="@+id/tableRow"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content">
-                                    <TextView
-                                        android:id="@+id/nextBus"
-                                        android:layout_height="wrap_content"
-                                        android:layout_width="wrap_content"
-                                        android:text="KUTAS"/>
-                            </TableRow>
-                    </TableLayout>
-                </LinearLayout>
-            </ScrollView>
+            <ListView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/busListView">
+            </ListView>
     </LinearLayout>
 </LinearLayout>
