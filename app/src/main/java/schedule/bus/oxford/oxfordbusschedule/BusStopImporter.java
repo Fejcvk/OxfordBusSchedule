@@ -22,7 +22,7 @@ import java.util.Scanner;
  * Created by philipp on 01.10.17.
  */
 
-public class BusStopImporter extends AppCompatActivity{
+public class BusStopImporter {
     private ArrayList<Busstop> busstops = new ArrayList<>();
 
     public BusStopImporter(Context context){
@@ -52,13 +52,5 @@ public class BusStopImporter extends AppCompatActivity{
         }
     }
 
-    public String[] getBusStopNames(){
-        ArrayList<String> b = new ArrayList<>();
-        for(Busstop busstop : busstops){
-            b.add(busstop.getInfo());
-        }
-        String[] ret = new String[b.size()];
-        ret = b.toArray(ret);
-        return ret;
-    }
+
 }
