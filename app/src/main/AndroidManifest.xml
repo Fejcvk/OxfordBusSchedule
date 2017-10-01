@@ -20,7 +20,7 @@
         </activity>
         <activity android:name=".busStopInputActivity"
             android:label="busStopActivity">
-            
+
         </activity>
     </application>
 
