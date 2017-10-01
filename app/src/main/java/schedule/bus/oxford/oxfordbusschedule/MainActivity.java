@@ -1,5 +1,6 @@
 package schedule.bus.oxford.oxfordbusschedule;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -31,6 +32,8 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+//        new BusStopImporter(getBaseContext());
     }
 
     @Override
@@ -70,13 +73,19 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
+<<<<<<< HEAD
 
         if (id == R.id.nav_busStopInput) {
             // Handle the camera action
+=======
+        Intent intent = null;
+        if (id == R.id.nav_busStopInput) {
+            intent = new Intent(this, busStopInputActivity.class);
+>>>>>>> dc296c3f9a045957fa68e580c14a537878198c75
         } else if (id == R.id.nav_findBusStop) {
             // Handle the find bus action
         }
-
+        startActivity(intent);
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
