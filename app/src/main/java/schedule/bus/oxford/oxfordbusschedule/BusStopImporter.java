@@ -1,22 +1,13 @@
 package schedule.bus.oxford.oxfordbusschedule;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.res.AssetManager;
-import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-
-import com.opencsv.CSVReader;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
 
 /**
  * Created by philipp on 01.10.17.

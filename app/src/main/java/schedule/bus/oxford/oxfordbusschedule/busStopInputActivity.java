@@ -4,6 +4,7 @@ package schedule.bus.oxford.oxfordbusschedule;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.MultiAutoCompleteTextView;
 
 /**
@@ -14,7 +15,7 @@ import android.widget.MultiAutoCompleteTextView;
 public class busStopInputActivity extends AppCompatActivity {
     BusstopManager busstopmanager;
     String[] autocomplete;
-    MultiAutoCompleteTextView multiAutoCompleteTextView;
+    AutoCompleteTextView autoCompleteTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,10 +23,10 @@ public class busStopInputActivity extends AppCompatActivity {
         busstopmanager = new BusstopManager(this.getBaseContext());
         autocomplete = busstopmanager.getBusStopNames();
         setContentView(R.layout.input_stop_activity);
-        multiAutoCompleteTextView = (MultiAutoCompleteTextView)findViewById(R.id.multiAutoCompleteTextView);
+        autoCompleteTextView = (AutoCompleteTextView)findViewById(R.id.autoCompleteTextView);
         ArrayAdapter adapter = new
                 ArrayAdapter(this,android.R.layout.simple_list_item_1,autocomplete);
-        multiAutoCompleteTextView.setAdapter(adapter);
-        multiAutoCompleteTextView.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
+        autoCompleteTextView.setAdapter(adapter);
+        autoCompleteTextView.setThreshold(1);
     }
 }
