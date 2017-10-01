@@ -12,12 +12,15 @@ import android.widget.MultiAutoCompleteTextView;
 
 
 public class busStopInputActivity extends AppCompatActivity {
-    String[] autocomplete = {"hit1","podpowidz","adolf","hitler"};
+    BusstopManager busstopmanager;
+    String[] autocomplete;
     MultiAutoCompleteTextView multiAutoCompleteTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        busstopmanager = new BusstopManager(this.getBaseContext());
+        autocomplete = busstopmanager.getBusStopNames();
         setContentView(R.layout.input_stop_activity);
         multiAutoCompleteTextView = (MultiAutoCompleteTextView)findViewById(R.id.multiAutoCompleteTextView);
         ArrayAdapter adapter = new

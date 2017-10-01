@@ -16,4 +16,8 @@ public class Busstop {
         this.lane = lane;
         this.lastStop = lastStop;
     }
+
+    public String getInfo() {
+        return lane+" "+stationname+" ("+lastStop+")";
+    }
 }
