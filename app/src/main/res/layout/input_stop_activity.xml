@@ -14,15 +14,19 @@
         <CheckBox
             android:layout_width="75dp"
             android:layout_height="match_parent"
-            android:text="@string/busU1"/>
+            android:text="@string/busU1"
+            android:id="@+id/checkboxU1"
+            />
         <CheckBox
             android:layout_width="75dp"
             android:layout_height="match_parent"
-            android:text="@string/busU5"/>
+            android:text="@string/busU5"
+            android:id="@+id/checkboxU5"/>
         <CheckBox
             android:layout_width="75dp"
             android:layout_height="match_parent"
-            android:text="@string/bus8"/>
+            android:text="@string/bus8"
+            android:id="@+id/checkbox8"/>
 
     </LinearLayout>
     <LinearLayout

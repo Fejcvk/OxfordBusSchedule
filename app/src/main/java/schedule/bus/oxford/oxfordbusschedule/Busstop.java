@@ -18,6 +18,6 @@ public class Busstop {
     }
 
     public String getInfo() {
-        return lane+" "+stationname+" ("+lastStop+")";
+        return lane+" "+stationname+" (to "+lastStop+")";
     }
 }
