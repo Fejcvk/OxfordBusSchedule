@@ -8,6 +8,11 @@
     tools:context="schedule.bus.oxford.oxfordbusschedule.MainActivity"
     tools:showIn="@layout/app_bar_main">
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+>>>>>>> develop
     <TextView
         android:layout_width="94dp"
         android:layout_height="21dp"
@@ -21,4 +26,8 @@
         android:layout_marginLeft="8dp"
         app:layout_constraintLeft_toLeftOf="parent" />
 
+<<<<<<< HEAD
+=======
+>>>>>>> dc296c3f9a045957fa68e580c14a537878198c75
+>>>>>>> develop
 </android.support.constraint.ConstraintLayout>
