@@ -33,4 +33,10 @@ public class BusstopManager {
         return ret;
     }
 
+    public int getIdFromInfo(String text) {
+        for(Busstop stop : busstops){
+            if(stop.getInfo().equals(text)) return stop.id;
+        }
+        return 0;
+    }
 }

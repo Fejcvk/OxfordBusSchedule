@@ -3,13 +3,22 @@ package schedule.bus.oxford.oxfordbusschedule;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.AutoCompleteTextView;
 
 import android.widget.ListView;
+import android.widget.Toast;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,7 +50,6 @@ public class busStopInputActivity extends AppCompatActivity {
         autoCompleteTextView.setAdapter(adapter);
         autoCompleteTextView.setThreshold(1);
         listView = (ListView)findViewById(R.id.busListView);
-        listViewFillUp(listView);
         autoCompleteTextView.setAdapter(adapter);
         autoCompleteTextView.setThreshold(1);
         checkU1 = (CheckBox)findViewById(R.id.checkboxU1);
@@ -90,23 +98,47 @@ public class busStopInputActivity extends AppCompatActivity {
             }
         });
 
+        autoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View arg1, int pos,
+                                    long id) {
+                String text = parent.getItemAtPosition(pos)+"";
+                int busstopId = busstopmanager.getIdFromInfo(text);
+                parseNextStops(busstopId);
+            }
+        });
+
     }
 
-    private void listViewFillUp(ListView lV) {
+    private void parseNextStops(int id) {
+        try {
+            String page = getPage(id);
+            System.out.println();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println(id);
+    }
+
+    private String getPage(int id) throws IOException {
+        new GetRequest(this).execute(id+"");
+        return "";
+    }
+
+    public void updateTimetable(ArrayList<TimetableEntry> entry){
+        ListView lv = (ListView)findViewById(R.id.busListView);
+        listViewFillUp(lv, entry);
+    }
+
+    private void listViewFillUp(ListView lV, ArrayList<TimetableEntry> entries) {
         List list = new ArrayList();
-        list.add("KUTAS");
-        list.add("KUTAS");
-        list.add("KUTAS");
-        list.add("KUTAS");
-        list.add("KUTAS");
-        list.add("KUTAS");
-        list.add("KUTAS");
-        list.add("KUTAS");
-        list.add("KUTAS");
-        list.add("KUTAS");
-        list.add("KUTAS");
-        list.add("KUTAS");
-        list.add("KUTAS");
+
+        for(TimetableEntry entry :entries){
+            list.add(entry.lane+" "+entry.destination+" "+entry.time);
+        }
+
         adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, list);
         lV.setAdapter(adapter);
     }
