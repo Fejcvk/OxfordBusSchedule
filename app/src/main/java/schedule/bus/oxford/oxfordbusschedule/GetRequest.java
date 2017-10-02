@@ -17,10 +17,11 @@ import java.util.regex.Pattern;
 
 public class GetRequest extends AsyncTask<String, Integer, String> {
     busStopInputActivity callback;
-    ArrayList<TimetableEntry> entries = new ArrayList<>();
+    ArrayList<TimetableEntry> entries;
 
-    public GetRequest(busStopInputActivity callback){
+    public GetRequest(busStopInputActivity callback, ArrayList<TimetableEntry> entries){
         this.callback = callback;
+        this.entries = entries;
     }
 
 
@@ -35,12 +36,10 @@ public class GetRequest extends AsyncTask<String, Integer, String> {
     }
 
     private ArrayList<TimetableEntry> getTimetableEntries(String page) {
-        ArrayList<TimetableEntry> entries = new ArrayList<>();
         //<tr[\s\S]*?<\/tr>
         //<tr class=\\\"rowServiceDeparture\\\"[\s\S]*?<\/tr>
         Pattern p = Pattern.compile("<tr class=\\\\\"rowServiceDeparture\\\\\"[\\s\\S]*?</tr>");
         Matcher m = p.matcher(page);
-        int lastMatchPos = 0;
         while (m.find()) {
             String tr = m.group(0);
             Pattern p2 = Pattern.compile(">([a-zA-Z0-9](.*?))<");
@@ -52,8 +51,6 @@ public class GetRequest extends AsyncTask<String, Integer, String> {
             m2.find();
             String time = m2.group(0).replaceAll(">","").replaceAll("<","").trim();
             entries.add(new TimetableEntry(lane, destination, time));
-
-            lastMatchPos = m.end();
         }
         return entries;
     }

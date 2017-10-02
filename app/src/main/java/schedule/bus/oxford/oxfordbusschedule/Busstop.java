@@ -1,23 +1,23 @@
 package schedule.bus.oxford.oxfordbusschedule;
 
+import java.util.ArrayList;
+
 /**
  * Created by philipp on 01.10.17.
  */
 
 public class Busstop {
-    public int id;
+    public ArrayList<Integer> id = new ArrayList<>();
     public String stationname;
-    public String lane;
-    public String lastStop;
+    public String destination;
 
-    public Busstop(int id, String stationname, String lane, String lastStop) {
-        this.id = id;
+    public Busstop(int id, String stationname, String destination) {
+        this.id.add(id);
         this.stationname = stationname;
-        this.lane = lane;
-        this.lastStop = lastStop;
+        this.destination = destination;
     }
 
     public String getInfo() {
-        return lane+" "+stationname+" (to "+lastStop+")";
+        return stationname+" (to "+destination+")";
     }
 }

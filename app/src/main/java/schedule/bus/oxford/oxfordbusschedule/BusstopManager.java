@@ -27,16 +27,20 @@ public class BusstopManager {
     public ArrayList<String> getBusStopNames(){
         ArrayList<String> ret = new ArrayList<>();
         for(Busstop busstop : busstops){
-            if(showLanes.contains(busstop.lane))
                 ret.add(busstop.getInfo());
         }
         return ret;
     }
 
-    public int getIdFromInfo(String text) {
+    public ArrayList<Integer> getIdFromInfo(String text) {
         for(Busstop stop : busstops){
             if(stop.getInfo().equals(text)) return stop.id;
         }
-        return 0;
+        return null;
+    }
+
+    public boolean showLane(String lane){
+        String[] splitted = lane.split(" ");
+        return showLanes.contains(splitted[0]);
     }
 }

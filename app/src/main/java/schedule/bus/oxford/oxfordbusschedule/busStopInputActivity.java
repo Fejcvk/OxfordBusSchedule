@@ -37,6 +37,9 @@ public class busStopInputActivity extends AppCompatActivity {
     CheckBox checkU5;
     CheckBox check8;
     ArrayAdapter<String> adapter;
+    ArrayList<TimetableEntry> entries;
+    ArrayList<Integer> selectedBusstopIds;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,8 +94,10 @@ public class busStopInputActivity extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked){
                     busstopmanager.addLane("8");
+                    busstopmanager.addLane("X8");
                 }else{
                     busstopmanager.removeLane("8");
+                    busstopmanager.removeLane("X8");
                 }
                 updateList();
             }
@@ -103,28 +108,28 @@ public class busStopInputActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View arg1, int pos,
                                     long id) {
-                String text = parent.getItemAtPosition(pos)+"";
-                int busstopId = busstopmanager.getIdFromInfo(text);
-                parseNextStops(busstopId);
+                selectedBusstopIds = busstopmanager.getIdFromInfo(parent.getItemAtPosition(pos)+"");
+                updateList();
             }
         });
 
     }
 
-    private void parseNextStops(int id) {
-        try {
-            String page = getPage(id);
-            System.out.println();
-        } catch (IOException e) {
-            e.printStackTrace();
+    private void parseNextStops(ArrayList<Integer> ids){
+        entries = new ArrayList<>();
+        if(ids != null){
+            for(Integer id : ids){
+                try {
+                    getPage((int)id);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
-
-        System.out.println(id);
     }
 
-    private String getPage(int id) throws IOException {
-        new GetRequest(this).execute(id+"");
-        return "";
+    private void getPage(int id) throws IOException {
+        new GetRequest(this, entries).execute(id+"");
     }
 
     public void updateTimetable(ArrayList<TimetableEntry> entry){
@@ -135,21 +140,23 @@ public class busStopInputActivity extends AppCompatActivity {
     private void listViewFillUp(ListView lV, ArrayList<TimetableEntry> entries) {
         List list = new ArrayList();
 
-        for(TimetableEntry entry :entries){
-            list.add(entry.lane+" "+entry.destination+" "+entry.time);
+        for(TimetableEntry entry : entries){
+            if(busstopmanager.showLane(entry.lane) && !list.contains(entry.lane+" "+entry.destination+" "+entry.time))
+                list.add(entry.lane+" "+entry.destination+" "+entry.time);
         }
 
         adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, list);
         lV.setAdapter(adapter);
     }
     private void updateList() {
-        autocomplete = busstopmanager.getBusStopNames();
-        adapter.clear();
-        adapter.addAll(autocomplete);
-        adapter.notifyDataSetChanged();
-        autoCompleteTextView.setText(autoCompleteTextView.getText()+"");
-        autoCompleteTextView.setSelection(autoCompleteTextView.length());
-        autoCompleteTextView.showDropDown();
+        parseNextStops(selectedBusstopIds);
+//        autocomplete = busstopmanager.getBusStopNames();
+//        adapter.clear();
+//        adapter.addAll(autocomplete);
+//        adapter.notifyDataSetChanged();
+//        autoCompleteTextView.setText(autoCompleteTextView.getText()+"");
+//        autoCompleteTextView.setSelection(autoCompleteTextView.length());
+//        autoCompleteTextView.showDropDown();
 
     }
 }
