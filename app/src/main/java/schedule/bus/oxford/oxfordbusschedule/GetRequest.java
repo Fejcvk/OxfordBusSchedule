@@ -1,5 +1,6 @@
 package schedule.bus.oxford.oxfordbusschedule;
 
+import android.app.ProgressDialog;
 import android.os.AsyncTask;
 
 import java.io.BufferedReader;

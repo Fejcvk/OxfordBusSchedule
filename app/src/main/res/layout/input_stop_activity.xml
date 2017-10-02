@@ -3,6 +3,18 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:weightSum="1">
+    <ProgressBar
+        android:id="@+id/progressbar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        android:max="100"
+        android:backgroundTint="#000000"
+        android:layout_below="@+id/framelayout"
+        android:indeterminateTint="#1a09d6"
+        android:layout_marginTop="-7dp"
+        android:visibility="invisible"/>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="wrap_content"
@@ -43,15 +55,15 @@
                 android:inputType="textAutoComplete"
                 />
     </LinearLayout>
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/scrollViewLayout"
-        android:layout_marginTop="25dp">
-            <ListView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/busListView">
-            </ListView>
-    </LinearLayout>
+    <android.support.v4.widget.SwipeRefreshLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/swiperefresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ListView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/busListView">
+        </ListView>
+    </android.support.v4.widget.SwipeRefreshLayout>
 </LinearLayout>

@@ -1,7 +1,9 @@
 package schedule.bus.oxford.oxfordbusschedule;
 
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
@@ -11,6 +13,7 @@ import android.widget.CompoundButton;
 import android.widget.AutoCompleteTextView;
 
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import java.io.BufferedReader;
@@ -20,6 +23,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.sql.Time;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -39,6 +44,9 @@ public class busStopInputActivity extends AppCompatActivity {
     ArrayAdapter<String> adapter;
     ArrayList<TimetableEntry> entries;
     ArrayList<Integer> selectedBusstopIds;
+    int counter = 0;
+
+    ProgressDialog progress;
 
 
     @Override
@@ -113,13 +121,37 @@ public class busStopInputActivity extends AppCompatActivity {
             }
         });
 
+        final SwipeRefreshLayout mySwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swiperefresh);
+        mySwipeRefreshLayout.setOnRefreshListener(
+                new SwipeRefreshLayout.OnRefreshListener() {
+                    @Override
+                    public void onRefresh() {
+                        updateList();
+                        mySwipeRefreshLayout.setRefreshing(false);
+                    }
+                }
+        );
+
+
+
     }
 
     private void parseNextStops(ArrayList<Integer> ids){
         entries = new ArrayList<>();
+//        progress = new ProgressDialog(this);
+//        progress.setTitle("Loading");
+//        progress.setMessage("Wait while loading...");
+//        progress.setCancelable(false); // disable dismiss by tapping outside of the dialog
+//        progress.show();
+//        progress.dismiss();
         if(ids != null){
             for(Integer id : ids){
                 try {
+                    if(counter==0){
+                        ProgressBar progressBar = (ProgressBar) findViewById(R.id.progressbar);
+                        progressBar.setVisibility(View.VISIBLE);
+                    }
+                    counter++;
                     getPage((int)id);
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -138,6 +170,19 @@ public class busStopInputActivity extends AppCompatActivity {
     }
 
     private void listViewFillUp(ListView lV, ArrayList<TimetableEntry> entries) {
+        Collections.sort(entries, new Comparator<TimetableEntry>() {
+            @Override
+            public int compare(TimetableEntry o1, TimetableEntry o2) {
+                if(o1.getRemainingMinutes() == o2.getRemainingMinutes()){
+                    return 0;
+                }else if(o1.getRemainingMinutes() < o2.getRemainingMinutes()){
+                    return -1;
+                }else{
+                    return 1;
+                }
+            }
+        });
+
         List list = new ArrayList();
 
         for(TimetableEntry entry : entries){
@@ -147,6 +192,12 @@ public class busStopInputActivity extends AppCompatActivity {
 
         adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, list);
         lV.setAdapter(adapter);
+        counter--;
+        if(counter == 0){
+            ProgressBar progressBar = (ProgressBar) findViewById(R.id.progressbar);
+            progressBar.setVisibility(View.INVISIBLE);
+        }
+
     }
     private void updateList() {
         parseNextStops(selectedBusstopIds);

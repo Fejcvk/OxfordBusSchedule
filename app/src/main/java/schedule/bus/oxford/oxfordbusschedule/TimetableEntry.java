@@ -15,4 +15,14 @@ class TimetableEntry {
         this.destination = destination;
         this.time = time;
     }
+
+    public int getRemainingMinutes() {
+        try{
+            String[] splitted = time.split(" ");
+            int mins = Integer.parseInt(splitted[0]);
+            return mins;
+        }catch(Exception e){
+            return 0;
+        }
+    }
 }
