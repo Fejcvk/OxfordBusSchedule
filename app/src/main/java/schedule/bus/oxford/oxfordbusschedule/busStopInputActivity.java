@@ -138,7 +138,8 @@ public class busStopInputActivity extends AppCompatActivity {
                 }
         );
 
-
+        checkU1.setChecked(true);
+        checkU5.setChecked(true);
 
     }
 

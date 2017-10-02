@@ -23,12 +23,13 @@
         android:orientation="horizontal"
         android:layout_marginTop="25dp"
         android:id="@+id/checkboxLayout">
+
         <CheckBox
+            android:id="@+id/checkboxU1"
             android:layout_width="75dp"
             android:layout_height="match_parent"
-            android:text="@string/busU1"
-            android:id="@+id/checkboxU1"
-            />
+            android:text="@string/busU1" />
+
         <CheckBox
             android:layout_width="75dp"
             android:layout_height="match_parent"
