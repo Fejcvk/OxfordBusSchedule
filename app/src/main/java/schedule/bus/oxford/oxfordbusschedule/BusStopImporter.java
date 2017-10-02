@@ -34,7 +34,6 @@ public class BusStopImporter {
             BufferedReader reader=new BufferedReader(csvStreamReader);
             String line = null;
             while((line = reader.readLine()) != null) {
-                System.out.println(line);
                 String[] splitted = line.split(";");
                 boolean existsAlready = false;
                 for(Busstop s : busstops){

@@ -11,8 +11,14 @@ import java.util.ArrayList;
 public class BusstopManager {
     private ArrayList<Busstop> busstops = new ArrayList<>();
     private ArrayList<String> showLanes = new ArrayList<>();
+    private Context context;
 
     public BusstopManager(Context context){
+        busstops = new BusStopImporter(context).getBusstops();
+        this.context = context;
+    }
+
+    public void update(){
         busstops = new BusStopImporter(context).getBusstops();
     }
 

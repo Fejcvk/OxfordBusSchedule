@@ -126,6 +126,7 @@ public class busStopInputActivity extends AppCompatActivity {
                 new SwipeRefreshLayout.OnRefreshListener() {
                     @Override
                     public void onRefresh() {
+                        busstopmanager.update();
                         updateList();
                         mySwipeRefreshLayout.setRefreshing(false);
                     }
