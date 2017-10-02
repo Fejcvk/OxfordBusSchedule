@@ -37,7 +37,7 @@ public class BusStopImporter {
                 String[] splitted = line.split(";");
                 boolean existsAlready = false;
                 for(Busstop s : busstops){
-                    if(s.stationname.equals(splitted[1]) && s.destination.equals(splitted[2])){
+                    if(s.stationname.equals(splitted[1])){
                         existsAlready = true;
                         s.id.add(Integer.parseInt(splitted[0]));
                     }
