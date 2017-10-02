@@ -68,7 +68,6 @@ public class MainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
@@ -77,7 +76,7 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.nav_busStopInput) {
             intent = new Intent(this, busStopInputActivity.class);
         } else if (id == R.id.nav_findBusStop) {
-            // Handle the find bus action
+           intent = new Intent(this, findYourStopActivity.class);
         }
         startActivity(intent);
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

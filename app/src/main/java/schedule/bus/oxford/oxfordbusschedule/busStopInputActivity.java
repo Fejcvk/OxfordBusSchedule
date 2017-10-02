@@ -28,6 +28,7 @@ public class busStopInputActivity extends AppCompatActivity {
     CheckBox checkU5;
     CheckBox check8;
     ArrayAdapter<String> adapter;
+    ArrayAdapter listViewAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,8 +108,8 @@ public class busStopInputActivity extends AppCompatActivity {
         list.add("KUTAS");
         list.add("KUTAS");
         list.add("KUTAS");
-        adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, list);
-        lV.setAdapter(adapter);
+        listViewAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, list);
+        lV.setAdapter(listViewAdapter);
     }
     private void updateList() {
         autocomplete = busstopmanager.getBusStopNames();
