@@ -19,6 +19,7 @@ public class BusstopManager {
     }
 
     public void update(){
+        busstops.clear();
         busstops = new BusStopImporter(context).getBusstops();
     }
 

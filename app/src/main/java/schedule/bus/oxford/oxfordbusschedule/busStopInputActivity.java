@@ -1,29 +1,29 @@
 package schedule.bus.oxford.oxfordbusschedule;
 
 
-import android.app.ProgressDialog;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.AutoCompleteTextView;
-
 import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
-import java.io.BufferedReader;
+import com.ramotion.paperonboarding.PaperOnboardingFragment;
+import com.ramotion.paperonboarding.PaperOnboardingPage;
+import com.ramotion.paperonboarding.listeners.PaperOnboardingOnRightOutListener;
+
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -138,9 +138,10 @@ public class busStopInputActivity extends AppCompatActivity {
                 }
         );
 
+
+
         checkU1.setChecked(true);
         checkU5.setChecked(true);
-
     }
 
     private void parseNextStops(ArrayList<Integer> ids){
