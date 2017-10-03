@@ -9,4 +9,7 @@
     <string name="busU1">U1</string>
     <string name="busU5">U5</string>
     <string name="bus8">8</string>
+    <string name="permissionNotGranted">Location permissions are not granted</string>
+    <string name="locationUnavailable">"Location not available"</string>
+    <string name="locationAvailable">Location available</string>
 </resources>
