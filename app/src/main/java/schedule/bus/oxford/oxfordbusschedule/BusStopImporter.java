@@ -14,15 +14,15 @@ import java.util.ArrayList;
  */
 
 public class BusStopImporter {
-    private ArrayList<Busstop> busstops = new ArrayList<>();
+    private ArrayList<busStop> busStops = new ArrayList<>();
 
     public BusStopImporter(Context context){
         init(context);
     }
 
 
-    public ArrayList<Busstop> getBusstops() {
-        return busstops;
+    public ArrayList<busStop> getBusStops() {
+        return busStops;
     }
 
     public void init(Context context) {
@@ -36,13 +36,13 @@ public class BusStopImporter {
             while((line = reader.readLine()) != null) {
                 String[] splitted = line.split(";");
                 boolean existsAlready = false;
-                for(Busstop s : busstops){
+                for(busStop s : busStops){
                     if(s.stationname.equals(splitted[1])){
                         existsAlready = true;
                         s.id.add(Integer.parseInt(splitted[0]));
                     }
                 }
-                if(!existsAlready) busstops.add(new Busstop(Integer.parseInt(splitted[0]), splitted[1], splitted[2]));
+                if(!existsAlready) busStops.add(new busStop(Integer.parseInt(splitted[0]), splitted[1], splitted[2]));
             }
         } catch (IOException e) {
             e.printStackTrace();

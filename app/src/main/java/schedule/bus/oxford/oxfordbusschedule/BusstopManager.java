@@ -9,18 +9,18 @@ import java.util.ArrayList;
  */
 
 public class BusstopManager {
-    private ArrayList<Busstop> busstops = new ArrayList<>();
+    private ArrayList<busStop> busStops = new ArrayList<>();
     private ArrayList<String> showLanes = new ArrayList<>();
     private Context context;
 
     public BusstopManager(Context context){
-        busstops = new BusStopImporter(context).getBusstops();
+        busStops = new BusStopImporter(context).getBusStops();
         this.context = context;
     }
 
     public void update(){
-        busstops.clear();
-        busstops = new BusStopImporter(context).getBusstops();
+        busStops.clear();
+        busStops = new BusStopImporter(context).getBusStops();
     }
 
     public void addLane(String lane){
@@ -33,14 +33,14 @@ public class BusstopManager {
 
     public ArrayList<String> getBusStopNames(){
         ArrayList<String> ret = new ArrayList<>();
-        for(Busstop busstop : busstops){
-                ret.add(busstop.getInfo());
+        for(busStop busStop : busStops){
+                ret.add(busStop.getInfo());
         }
         return ret;
     }
 
     public ArrayList<Integer> getIdFromInfo(String text) {
-        for(Busstop stop : busstops){
+        for(busStop stop : busStops){
             if(stop.getInfo().equals(text)) return stop.id;
         }
         return null;

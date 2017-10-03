@@ -12,8 +12,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="0.08"
-        android:ems="10"
-        android:inputType=""
         android:text="@string/permissionNotGranted"
         android:textAlignment="center"
         android:visibility="visible" />
@@ -24,4 +22,21 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:srcCompat="@android:drawable/ic_menu_mylocation" />
+
+    <SeekBar
+        android:id="@+id/radiusSeekBar"
+        style="@android:style/Widget.Material.SeekBar.Discrete"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.14"
+        android:max="20"
+        android:progress="1" />
+
+    <TextView
+        android:id="@+id/radiusTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.08"
+        android:text="@string/seekBarTextView"
+        android:textAlignment="viewStart" />
 </LinearLayout>

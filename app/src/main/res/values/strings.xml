@@ -12,4 +12,5 @@
     <string name="permissionNotGranted">Location permissions are not granted</string>
     <string name="locationUnavailable">"Location not available"</string>
     <string name="locationAvailable">Location available</string>
+    <string name="seekBarTextView">Drag to set radius of search</string>
 </resources>
