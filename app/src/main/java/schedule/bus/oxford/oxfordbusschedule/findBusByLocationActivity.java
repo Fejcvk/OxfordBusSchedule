@@ -156,7 +156,7 @@ public class findBusByLocationActivity extends AppCompatActivity {
     private void loadUpNearByBusStops(double lat, double lon)
     {
         String type = "bus_station";
-        StringBuilder googlePlacesUrlQuery = new StringBuilder("https://maps.googleapis.com/maps/api/place/nearbysearch/json?");
+        StringBuilder googlePlacesUrlQuery = new StringBuilder("htavtps://maps.googleapis.com/maps/api/place/nearbysearch/json?");
             googlePlacesUrlQuery.append("location=").append(lat).append(",").append(lon);
             googlePlacesUrlQuery.append("&radius=").append(radius);
             googlePlacesUrlQuery.append("&types=").append(type);
