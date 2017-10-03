@@ -1,16 +1,32 @@
 package schedule.bus.oxford.oxfordbusschedule;
 
 
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
+import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.AutoCompleteTextView;
-
 import android.widget.ListView;
+import android.widget.ProgressBar;
 
+import com.ramotion.paperonboarding.PaperOnboardingFragment;
+import com.ramotion.paperonboarding.PaperOnboardingPage;
+import com.ramotion.paperonboarding.listeners.PaperOnboardingOnRightOutListener;
+
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -28,7 +44,11 @@ public class busStopInputActivity extends AppCompatActivity {
     CheckBox checkU5;
     CheckBox check8;
     ArrayAdapter<String> adapter;
-    ArrayAdapter listViewAdapter;
+
+    ArrayList<TimetableEntry> entries;
+    ArrayList<Integer> selectedBusstopIds;
+    int counter = 0;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +62,6 @@ public class busStopInputActivity extends AppCompatActivity {
         autoCompleteTextView.setAdapter(adapter);
         autoCompleteTextView.setThreshold(1);
         listView = (ListView)findViewById(R.id.busListView);
-        listViewFillUp(listView);
         autoCompleteTextView.setAdapter(adapter);
         autoCompleteTextView.setThreshold(1);
         checkU1 = (CheckBox)findViewById(R.id.checkboxU1);
@@ -84,41 +103,119 @@ public class busStopInputActivity extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked){
                     busstopmanager.addLane("8");
+                    busstopmanager.addLane("X8");
                 }else{
                     busstopmanager.removeLane("8");
+                    busstopmanager.removeLane("X8");
                 }
                 updateList();
             }
         });
 
+        autoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View arg1, int pos,
+                                    long id) {
+                selectedBusstopIds = busstopmanager.getIdFromInfo(parent.getItemAtPosition(pos)+"");
+                View view = getCurrentFocus();
+                if (view != null) {
+                    InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                }
+                updateList();
+            }
+        });
+
+        final SwipeRefreshLayout mySwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swiperefresh);
+        mySwipeRefreshLayout.setOnRefreshListener(
+                new SwipeRefreshLayout.OnRefreshListener() {
+                    @Override
+                    public void onRefresh() {
+                        busstopmanager.update();
+                        updateList();
+                        mySwipeRefreshLayout.setRefreshing(false);
+                    }
+                }
+        );
+
+
+
+        checkU1.setChecked(true);
+        checkU5.setChecked(true);
     }
 
-    private void listViewFillUp(ListView lV) {
+    private void parseNextStops(ArrayList<Integer> ids){
+        entries = new ArrayList<>();
+//        progress = new ProgressDialog(this);
+//        progress.setTitle("Loading");
+//        progress.setMessage("Wait while loading...");
+//        progress.setCancelable(false); // disable dismiss by tapping outside of the dialog
+//        progress.show();
+//        progress.dismiss();
+        if(ids != null){
+            for(Integer id : ids){
+                try {
+                    if(counter==0){
+                        ProgressBar progressBar = (ProgressBar) findViewById(R.id.progressbar);
+                        progressBar.setVisibility(View.VISIBLE);
+                    }
+                    counter++;
+                    getPage((int)id);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    private void getPage(int id) throws IOException {
+        new GetRequest(this, entries).execute(id+"");
+    }
+
+    public void updateTimetable(ArrayList<TimetableEntry> entry){
+        ListView lv = (ListView)findViewById(R.id.busListView);
+        listViewFillUp(lv, entry);
+    }
+
+    private void listViewFillUp(ListView lV, ArrayList<TimetableEntry> entries) {
+        Collections.sort(entries, new Comparator<TimetableEntry>() {
+            @Override
+            public int compare(TimetableEntry o1, TimetableEntry o2) {
+                if(o1.getRemainingMinutes() == o2.getRemainingMinutes()){
+                    return 0;
+                }else if(o1.getRemainingMinutes() < o2.getRemainingMinutes()){
+                    return -1;
+                }else{
+                    return 1;
+                }
+            }
+        });
+
         List list = new ArrayList();
-        list.add("KUTAS");
-        list.add("KUTAS");
-        list.add("KUTAS");
-        list.add("KUTAS");
-        list.add("KUTAS");
-        list.add("KUTAS");
-        list.add("KUTAS");
-        list.add("KUTAS");
-        list.add("KUTAS");
-        list.add("KUTAS");
-        list.add("KUTAS");
-        list.add("KUTAS");
-        list.add("KUTAS");
-        listViewAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, list);
-        lV.setAdapter(listViewAdapter);
+        for(TimetableEntry entry : entries){
+            if(busstopmanager.showLane(entry.lane) && !list.contains(entry.lane+" "+entry.destination+" "+entry.time))
+                list.add(entry.lane+" "+entry.destination+" "+entry.time);
+        }
+
+        adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, list);
+        lV.setAdapter(adapter);
+        counter--;
+        if(counter == 0){
+            ProgressBar progressBar = (ProgressBar) findViewById(R.id.progressbar);
+            progressBar.setVisibility(View.INVISIBLE);
+        }
+
     }
     private void updateList() {
-        autocomplete = busstopmanager.getBusStopNames();
-        adapter.clear();
-        adapter.addAll(autocomplete);
-        adapter.notifyDataSetChanged();
-        autoCompleteTextView.setText(autoCompleteTextView.getText()+"");
-        autoCompleteTextView.setSelection(autoCompleteTextView.length());
-        autoCompleteTextView.showDropDown();
+        parseNextStops(selectedBusstopIds);
+//        autocomplete = busstopmanager.getBusStopNames();
+//        adapter.clear();
+//        adapter.addAll(autocomplete);
+//        adapter.notifyDataSetChanged();
+//        autoCompleteTextView.setText(autoCompleteTextView.getText()+"");
+//        autoCompleteTextView.setSelection(autoCompleteTextView.length());
+//        autoCompleteTextView.showDropDown();
 
     }
 }

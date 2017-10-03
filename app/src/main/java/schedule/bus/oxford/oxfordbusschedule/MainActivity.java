@@ -32,8 +32,6 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
-//        new BusStopImporter(getBaseContext());
     }
 
     @Override
@@ -76,7 +74,8 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.nav_busStopInput) {
             intent = new Intent(this, busStopInputActivity.class);
         } else if (id == R.id.nav_findBusStop) {
-           intent = new Intent(this, findYourStopActivity.class);
+
+            intent = new Intent(this,findBusByLocationActivity.class);
         }
         startActivity(intent);
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

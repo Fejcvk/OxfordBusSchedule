@@ -34,9 +34,15 @@ public class BusStopImporter {
             BufferedReader reader=new BufferedReader(csvStreamReader);
             String line = null;
             while((line = reader.readLine()) != null) {
-                System.out.println(line);
                 String[] splitted = line.split(";");
-                busstops.add(new Busstop(Integer.parseInt(splitted[0]), splitted[1], splitted[2], splitted[3]));
+                boolean existsAlready = false;
+                for(Busstop s : busstops){
+                    if(s.stationname.equals(splitted[1])){
+                        existsAlready = true;
+                        s.id.add(Integer.parseInt(splitted[0]));
+                    }
+                }
+                if(!existsAlready) busstops.add(new Busstop(Integer.parseInt(splitted[0]), splitted[1], splitted[2]));
             }
         } catch (IOException e) {
             e.printStackTrace();

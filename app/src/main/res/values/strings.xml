@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">OxfordBusSchedule</string>
+    <string name="app_name">Schedule for Busses in Oxford</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -9,4 +9,7 @@
     <string name="busU1">U1</string>
     <string name="busU5">U5</string>
     <string name="bus8">8</string>
+    <string name="permissionNotGranted">Location permissions are not granted</string>
+    <string name="locationUnavailable">"Location not available"</string>
+    <string name="locationAvailable">Location available</string>
 </resources>
