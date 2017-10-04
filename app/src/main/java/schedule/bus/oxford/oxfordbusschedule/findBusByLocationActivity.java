@@ -2,8 +2,10 @@ package schedule.bus.oxford.oxfordbusschedule;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
+import android.location.Criteria;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
@@ -28,6 +30,7 @@ import java.util.Locale;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.google.android.gms.location.LocationListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -45,43 +48,52 @@ public class findBusByLocationActivity extends AppCompatActivity {
     TextView seekBarResultTextView;
     ArrayList<String> busStopNamesArrayList;
     private final static int LOCATION_PERMISSION_REQUEST = 1;
+    private double lat;
+    private double lon;
     private final static String GOOGLE_WEB_API_KEY = "AIzaSyCQHEEEDu6vlX63NkpaXDsdXXjPaMEhKek";
-    private int radius = 0;
+    //in meters
+    private int radius = 1000;
+    private boolean hasNextPage = false;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.find_by_location_activity);
 
-        imageButton = findViewById(R.id.getLocationButton);
-        textView = findViewById(R.id.permissionTextView);
-
+        imageButton = (ImageButton) findViewById(R.id.getLocationButton);
+        textView = (TextView) findViewById(R.id.permissionTextView);
         //Setting listener for localize button
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view)
-            {
+            //TODO: Wait for obtaining a location
+            //TODO: Create os procking location class
+            public void onClick(View view) {
                 //self check if permission is already granted
-                if(ContextCompat.checkSelfPermission(findBusByLocationActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
+                if (ContextCompat.checkSelfPermission(findBusByLocationActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
                 {
                     //if they are not granted request permissions
-                    if(ActivityCompat.shouldShowRequestPermissionRationale(findBusByLocationActivity.this,Manifest.permission.ACCESS_COARSE_LOCATION))
+                    if (ActivityCompat.shouldShowRequestPermissionRationale(findBusByLocationActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION))
                     {
-                        ActivityCompat.requestPermissions(findBusByLocationActivity.this,new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, LOCATION_PERMISSION_REQUEST);
+                        ActivityCompat.requestPermissions(findBusByLocationActivity.this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, LOCATION_PERMISSION_REQUEST);
                     }
-                    else
+
+                 else
                     {
-                        ActivityCompat.requestPermissions(findBusByLocationActivity.this,new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, LOCATION_PERMISSION_REQUEST);
+                        ActivityCompat.requestPermissions(findBusByLocationActivity.this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, LOCATION_PERMISSION_REQUEST);
                     }
                 }
                 //if permissions are already granted proceede to retriving current location
                 else
                 {
-                    LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
+                    LocationManager locationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
                     Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
 
                     try {
                         textView.setText(currLocation(location.getLatitude(),location.getLongitude()));
-                        loadUpNearByBusStops(location.getLatitude(),location.getLongitude());
+                        lat = location.getLatitude();
+                        lon = location.getLongitude();
+                        loadUpNearByBusStops(location.getLatitude(),location.getLongitude(),"");
                     }catch (Exception e)
                     {
                         e.printStackTrace();
@@ -90,13 +102,13 @@ public class findBusByLocationActivity extends AppCompatActivity {
                 }
             }
         });
-        seekBar = (SeekBar) findViewById(R.id.radiusSeekBar);
+        seekBar = findViewById(R.id.radiusSeekBar);
         seekBarResultTextView = findViewById(R.id.radiusTextView);
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
                 seekBarResultTextView.setText("Radius of search : " + String.valueOf(i));
-                radius = i;
+                radius = i*1000;
             }
 
             @Override
@@ -109,30 +121,31 @@ public class findBusByLocationActivity extends AppCompatActivity {
             }
         });
     }
+
     //handling the answer of permission request
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        switch (requestCode)
-        {
-            case LOCATION_PERMISSION_REQUEST:{
-                if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
-                {
-                    if(ContextCompat.checkSelfPermission(findBusByLocationActivity.this,Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED)
+        switch (requestCode) {
+            case LOCATION_PERMISSION_REQUEST: {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    if (ContextCompat.checkSelfPermission(findBusByLocationActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED)
                     {
                         LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
                         Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
                         try {
-                            textView.setText(currLocation(location.getLatitude(),location.getLongitude()));
-                            loadUpNearByBusStops(location.getLatitude(),location.getLongitude());
-                        }catch (Exception e)
-                        {
+                            textView.setText(currLocation(location.getLatitude(), location.getLongitude()));
+                            lat = location.getLatitude();
+                            lon = location.getLongitude();
+                            loadUpNearByBusStops(location.getLatitude(), location.getLongitude(),"");
+                        } catch (Exception e) {
                             e.printStackTrace();
-                            Toast.makeText(findBusByLocationActivity.this,"Location not found ;___;",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(findBusByLocationActivity.this, "Location not found ;___;", Toast.LENGTH_SHORT).show();
                         }
+
                     }
                     else
                     {
-                        Toast.makeText(findBusByLocationActivity.this,"Permission not granted ;__;",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(findBusByLocationActivity.this, "Permission not granted ;__;", Toast.LENGTH_SHORT).show();
                     }
                 }
             }
@@ -144,27 +157,34 @@ public class findBusByLocationActivity extends AppCompatActivity {
         Geocoder geocoder = new Geocoder(findBusByLocationActivity.this, Locale.getDefault());
         List<Address> addressList = null;
         try {
-            addressList = geocoder.getFromLocation(lat,lon,1);
+            addressList = geocoder.getFromLocation(lat, lon, 1);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        if(addressList.size() > 0) {
+        if (addressList.size() > 0) {
             currCity = addressList.get(0).getLocality();
         }
         return currCity;
-    };
-    private void loadUpNearByBusStops(double lat, double lon)
-    {
+    }
+
+    ;
+
+    private void loadUpNearByBusStops(double lat, double lon,String nextPageToken) {
         String type = "bus_station";
         StringBuilder googlePlacesUrlQuery = new StringBuilder("https://maps.googleapis.com/maps/api/place/nearbysearch/json?");
-            googlePlacesUrlQuery.append("location=").append(lat).append(",").append(lon);
-            googlePlacesUrlQuery.append("&radius=").append(radius);
-            googlePlacesUrlQuery.append("&types=").append(type);
-            googlePlacesUrlQuery.append("&key=").append(GOOGLE_WEB_API_KEY);
+        googlePlacesUrlQuery.append("location=").append(lat).append(",").append(lon);
+        googlePlacesUrlQuery.append("&radius=").append(radius);
+        googlePlacesUrlQuery.append("&types=").append(type);
+        googlePlacesUrlQuery.append("&key=").append(GOOGLE_WEB_API_KEY);
+        if(hasNextPage)
+        {
+            googlePlacesUrlQuery.append("&pagetoken=").append(nextPageToken);
+        }
+        System.out.println("**************************************** "+ googlePlacesUrlQuery);
         JsonObjectRequest request = new JsonObjectRequest(googlePlacesUrlQuery.toString(), new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                Log.i("OXBUS ","onResponse: Resposne= " + response.toString());
+                Log.i("OXBUS ", "onResponse: Response= " + response.toString());
                 parseLocationResult(response);
             }
         },
@@ -177,27 +197,38 @@ public class findBusByLocationActivity extends AppCompatActivity {
                 });
         AppController.getInstance().addToRequestQueue(request);
     }
-
+    //TODO: cconnect all the responses from google nearby api to one bus stop list 
     private void parseLocationResult(JSONObject response) {
         String name;
-        busStopNamesArrayList = new ArrayList();
+        busStopNamesArrayList = new ArrayList<>();
         try {
-            JSONArray jsonArray = response.getJSONArray("responses");
-            if(response.getString("status").equalsIgnoreCase("OK"))
+            JSONArray jsonArray = response.getJSONArray("results");
+            if (response.getString("status").equalsIgnoreCase("OK"))
             {
-                for(int i = 0; i < jsonArray.length(); i++)
+                for (int i = 0; i < jsonArray.length(); i++)
                 {
                     JSONObject currStop = jsonArray.getJSONObject(i);
                     name = currStop.getString("name");
                     busStopNamesArrayList.add(name);
                 }
+                if(response.toString().contains("next_page_token"))
+                {
+                    Thread.sleep(4000);
+                    hasNextPage = true;
+                    loadUpNearByBusStops(lat,lon,response.getString("next_page_token"));
+                }
+                else
+                    hasNextPage = false;
                 Toast.makeText(getBaseContext(), jsonArray.length() + " Bus Stops found!", Toast.LENGTH_SHORT).show();
-            }else if (response.getString("status").equalsIgnoreCase("ZERO_RESULTS")) {
-                Toast.makeText(getBaseContext(), "No Bus Stops found in " + radius + " KM radius ;___;", Toast.LENGTH_LONG).show();
+                Log.i("AMOUNTOFSTOPS", busStopNamesArrayList.size() + "stops has been founded");
+            } else if (response.getString("status").equalsIgnoreCase("ZERO_RESULTS")) {
+                Toast.makeText(getBaseContext(), "No Bus Stops found in " + radius + " meter radius ;___;", Toast.LENGTH_LONG).show();
             }
         } catch (JSONException e) {
             e.printStackTrace();
             Log.e("OXBUS", "parseLocationResult: Error= " + e.getMessage());
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 

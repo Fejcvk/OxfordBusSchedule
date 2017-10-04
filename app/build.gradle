@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 26
-    buildToolsVersion "26.0.1"
+    buildToolsVersion "26.0.2"
     defaultConfig {
         applicationId "schedule.bus.oxford.oxfordbusschedule"
         minSdkVersion 15
@@ -27,10 +27,10 @@ dependencies {
     })
     compile 'com.android.support:appcompat-v7:26.+'
     compile 'com.android.support:design:26.+'
-    compile 'com.google.android.gms:play-services-location:11.+'
+    compile 'com.google.android.gms:play-services-location:11.0.4'
     compile 'com.ramotion.paperonboarding:paper-onboarding:1.1.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
-    compile 'com.google.android.gms:play-services:11.+'
+    compile 'com.google.android.gms:play-services:11.0.4'
     compile 'com.mcxiaoke.volley:library:1.0.19'
     testCompile 'junit:junit:4.12'
 }
